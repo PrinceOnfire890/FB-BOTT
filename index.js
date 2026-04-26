@@ -1,4 +1,4 @@
-import login from "fca-priyansh";
+import login from "fca-smart-shankar"; // Updated to support all groups
 import fs from "fs";
 import express from "express";
 
@@ -21,7 +21,7 @@ const messageQueues = {};
 const queueRunning = {};
 
 const app = express();
-app.get("/", (_, res) => res.send("<h2>Messenger Bot Running</h2>"));
+app.get("/", (_, res) => res.send("<h2>Messenger Bot Running - Full Support</h2>"));
 app.listen(20782, () => console.log("🌐 Log server: http://localhost:20782"));
 
 process.on("uncaughtException", (err) => console.error("❗ Uncaught Exception:", err.message));
@@ -29,8 +29,16 @@ process.on("unhandledRejection", (reason) => console.error("❗ Unhandled Reject
 
 login({ appState: JSON.parse(fs.readFileSync("appstate.json", "utf8")) }, (err, api) => {
   if (err) return console.error("❌ Login failed:", err);
-  api.setOptions({ listenEvents: true });
-  console.log("✅ Bot logged in and running...");
+  
+  // Updated Options for Community/New Groups support
+  api.setOptions({ 
+    listenEvents: true,
+    selfListen: false,
+    forcePoll: true,
+    online: true
+  });
+  
+  console.log("✅ Bot logged in and running on ALL groups...");
 
   api.listenMqtt(async (err, event) => {
     try {
@@ -96,7 +104,7 @@ login({ appState: JSON.parse(fs.readFileSync("appstate.json", "utf8")) }, (err, 
           "Prince Boss: Beta, teri izzat ka variable undefined hai 🛠️",
           "Prince Boss keh rahe: Chal, ab mute button press kar le 😂",
 
-          // 🔹 Reverse Compliment (40) — yaha se add kiya
+          // 🔹 Reverse Compliment (40)
           "Waah, tu handsome hai… bus photo me filter ka kamaal hai 😂",
           "Teri smile cute hai… jaise Windows XP ka loading icon 😏",
           "Lagta hai tu smart hai… lekin Google pe copy paste master 😎",
@@ -118,7 +126,7 @@ login({ appState: JSON.parse(fs.readFileSync("appstate.json", "utf8")) }, (err, 
           "Lagta hai tu hardworking hai… par status me only chill 😎",
           "Tere status killer hai… par views zero 😂",
 
-          // 🔹 Meme Reference (40) — yaha se add kiya
+          // 🔹 Meme Reference (40)
           "Tu asli me 'Hello Friends, Chai Pilo' ka lost brother hai ☕",
           "Bkl, tu 'Rasode me kaun tha' ka answer hai 😂",
           "Tu 'Ye bik gayi hai gormint' ka chhota beta hai 🏷️",
